@@ -39,10 +39,32 @@
     <div class="count" id="count">功德: 0</div>
 
     <script>
-        const muyu = document.getElementById('muyu');
-        const countEl = document.getElementById('count');
-        let count = 0;
+      
+// 木鱼计数+音效（手机/电脑通用）
+let merit = 0;
+const meritElement = document.getElementById('count');
+const muyu = document.getElementById('muyu');
+// 用稳定的CDN音效链接
+const audio = new Audio('https://cdn.jsdelivr.net/npm/muyu-audio@1.0.0/muyu.mp3');
+audio.load(); // 预加载音效
 
+// 木鱼点击事件（计数+音效+动画）
+muyu.addEventListener('click', () => {
+  // 功德计数+1
+  merit++;
+  meritElement.textContent = "功德: "+merit;
+  // 木鱼敲击动画
+  muyu.style.transform = 'scale(0.95)';
+  setTimeout(() => {
+    muyu.style.transform = 'scale(1)';
+  }, 100);
+  // 播放音效（重置播放头，支持连续点击）
+  audio.currentTime = 0;
+  audio.play().catch(err => {
+    // 首次点击无音效时的提示
+    alert('点一下屏幕空白处，授权音效后再敲哦～');
+  });
+});
         
 
 
@@ -64,5 +86,6 @@ document.getElementById('muyu').addEventListener('click', function() {
 </body>
 
 </html>
+
 
 
