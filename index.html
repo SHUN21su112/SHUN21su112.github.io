@@ -43,16 +43,26 @@
         const countEl = document.getElementById('count');
         let count = 0;
 
-        // 点击木鱼触发
-        muyu.addEventListener('click', () => {
-            count++;
-            countEl.textContent = `功德: ${count}`;
-            // 播放敲击音效
-            const audio = new Audio('https://cdn.jsdelivr.net/gh/xxxx/muyu-sound.mp3');
-            audio.play();
-        });
-    </script>
+        
+
+
+window.addEventListener('load', function() {
+  audio = new Audio('https://cdn.jsdelivr.net/npm/muyu-audio@1.0.0/muyu.mp3');
+  // 预加载音频，确保手机端能快速响应
+  audio.load();
+});
+
+// 给木鱼绑定点击事件
+document.getElementById('muyu').addEventListener('click', function() {
+  // 手机端必须由用户交互触发，所以在这里播放
+  audio.currentTime = 0; // 重置播放头，支持连续快速点击
+  audio.play().catch(err => {
+    // 如果第一次点击没声音，再弹一个提示让用户主动触发
+    alert('请点击屏幕任意位置，授权播放音效后再敲击木鱼');
+  });
+});
 </body>
 
 </html>
+
 
