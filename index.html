@@ -1,68 +1,74 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>赛博木鱼 | 功德+1</title>
+    <title>电子木鱼</title>
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
-            background-color: #ffe6e6;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            font-family: "Microsoft Yahei", sans-serif;
+            background-color: #f5f1e9;
+            font-family: "Microsoft YaHei", sans-serif;
         }
-        .muyu {
+        /* 木鱼样式 */
+        #muYu {
             width: 200px;
             height: 200px;
-            background: url('muyu.png') no-repeat center center;
-            background-size: contain;
+            background-image: url("https://img.icons8.com/fluency/200/000000/wooden-fish.png");
+            background-size: cover;
             cursor: pointer;
-            transition: transform 0.1s;
+            transition: transform 0.1s ease;
+            margin-bottom: 30px;
         }
-        .muyu:active {
+        #muYu:active {
             transform: scale(0.95);
         }
-        .count {
-            font-size: 24px;
-            color: #5a4a3d;
-            margin-top: 30px;
+        /* 功德数样式 */
+        #merit {
+            font-size: 36px;
+            font-weight: bold;
+            color: #8b4513;
         }
     </style>
 </head>
 <body>
-    <div class="muyu" id="muyu"></div>
-    <div class="count" id="count">功德: 0</div>
+    <!-- 木鱼元素 -->
+    <div id="muYu"></div>
+    <!-- 功德计数 -->
+    <div>功德: <span id="merit">0</span></div>
 
-    <script>      
-// 木鱼计数+音效（手机/电脑通用）
-let merit = 0;
-const meritElement = document.getElementById('count');
-const muyu = document.getElementById('muyu');
-// 用稳定的CDN音效链接
-const audio = new Audio('https://cdn.jsdelivr.net/npm/muyu-audio@1.0.0/muyu.mp3');
-audio.load(); // 预加载音效
+    <script>
+        // 获取元素
+        const muYu = document.getElementById('muYu');
+        const merit = document.getElementById('merit');
+        // 初始化功德数
+        let meritNum = 0;
+        // 创建音频实例（音效链接稳定可用）
+        const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-wooden-click-1106.mp3');
+        // 设置音频循环关闭，每次点击重新播放
+        audio.loop = false;
 
-// 木鱼点击事件（计数+音效+动画）
-muyu.addEventListener('click', () => {
-  // 功德计数+1
-  merit++;
-  meritElement.textContent = "功德: "+merit;
-  // 木鱼敲击动画
-  muyu.style.transform = 'scale(0.95)';
-  setTimeout(() => {
-    muyu.style.transform = 'scale(1)';
-  }, 100);
-  // 播放音效（重置播放头，支持连续点击）
-  audio.currentTime = 0;
-  audio.play().catch(err => {
-    // 首次点击无音效时的提示
-    alert('点一下屏幕空白处，授权音效后再敲哦～');
-  });
-});
+        // 木鱼点击事件
+        muYu.addEventListener('click', function() {
+            // 功德数+1
+            meritNum++;
+            merit.innerText = meritNum;
+            // 播放音效（重置播放位置，避免连续点击没声音）
+            audio.currentTime = 0;
+            audio.play().catch(err => {
+                // 兼容浏览器音频权限，无权限时不报错
+                console.log('音频播放需手动交互授权:', err);
+            });
+        });
+    </script>
 </body>
 </html>
